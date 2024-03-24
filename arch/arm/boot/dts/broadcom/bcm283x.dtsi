@@ -24,6 +24,7 @@
 	aliases {
 		serial0 = &uart0;
 		serial1 = &uart1;
+		i2c1 = &i2c1;
 	};
 
 	chosen {
@@ -324,6 +325,10 @@
 			reg = <0x7e203000 0x24>;
 			clocks = <&clocks BCM2835_CLOCK_PCM>;
 			status = "disabled";
+			dmas = <&dma 2>, <&dma 3>;
+			dma-names = "tx", "rx";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pcm_gpio18>;
 		};
 
 		spi: spi@7e204000 {
@@ -475,6 +480,11 @@
 			phys = <&usbphy>;
 			phy-names = "usb2-phy";
 		};
+
+		/* External sound card */
+		sound: sound {
+			status = "disabled";
+		};
 	};
 
 	clocks {
@@ -497,5 +507,14 @@
 	usbphy: phy {
 		compatible = "usb-nop-xceiv";
 		#phy-cells = <0>;
+	};
+
+	/* Define notional regulator for use by overlays */
+	vdd_3v3_reg: fixedregulator_3v3 {
+		compatible = "regulator-fixed";
+		regulator-always-on;
+		regulator-max-microvolt = <3300000>;
+		regulator-min-microvolt = <3300000>;
+		regulator-name = "3v3";
 	};
 };
