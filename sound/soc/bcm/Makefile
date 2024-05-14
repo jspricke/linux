@@ -13,3 +13,5 @@ obj-$(CONFIG_SND_SOC_CYGNUS) += snd-soc-cygnus.o
 snd-soc-63xx-objs := bcm63xx-i2s-whistler.o bcm63xx-pcm-whistler.o
 
 obj-$(CONFIG_SND_BCM63XX_I2S_WHISTLER) += snd-soc-63xx.o
+snd-soc-hifiberry-dacplus-objs := hifiberry_dacplus.o
+obj-$(CONFIG_SND_BCM2708_SOC_HIFIBERRY_DACPLUS) += snd-soc-hifiberry-dacplus.o
