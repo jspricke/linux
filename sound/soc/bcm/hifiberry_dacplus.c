@@ -413,11 +413,13 @@ static int hb_hp_detect(void)
 	return ret;
 };
 
+#ifdef CONFIG_OF_DYNAMIC
 static struct property tpa_enable_prop = {
 	       .name = "status",
 	       .length = 4 + 1, /* length 'okay' + 1 */
 	       .value = "okay",
 	};
+#endif /* CONFIG_OF_DYNAMIC */
 
 static int snd_rpi_hifiberry_dacplus_probe(struct platform_device *pdev)
 {
@@ -427,7 +429,9 @@ static int snd_rpi_hifiberry_dacplus_probe(struct platform_device *pdev)
 	struct device_node *tpa_node;
 	struct device_node *tas_node;
 	struct property *tpa_prop;
+#ifdef CONFIG_OF_DYNAMIC
 	struct of_changeset ocs;
+#endif /* CONFIG_OF_DYNAMIC */
 	struct property *pp;
 	int tmp;
 
@@ -442,6 +446,7 @@ static int snd_rpi_hifiberry_dacplus_probe(struct platform_device *pdev)
 		tpa_node = of_find_compatible_node(NULL, NULL, "ti,tpa6130a2");
 		tpa_prop = of_find_property(tpa_node, "status", &len);
 
+#ifdef CONFIG_OF_DYNAMIC
 		if (strcmp((char *)tpa_prop->value, "okay")) {
 			/* and activate headphone using change_sets */
 			dev_info(&pdev->dev, "activating headphone amplifier");
@@ -460,6 +465,7 @@ static int snd_rpi_hifiberry_dacplus_probe(struct platform_device *pdev)
 				return -ENODEV;
 			}
 		}
+#endif /* CONFIG_OF_DYNAMIC */
 	}
 
 	tas_node = of_find_compatible_node(NULL, NULL, "ti,tas5756");
